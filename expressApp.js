@@ -14,7 +14,7 @@ let cart = [
   {
     id: 1,
     productName: "Wireless Mouse",
-    price: 799,
+    price: 899,
     quantity: 2,
     category: "Electronics"
   },
