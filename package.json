@@ -1,0 +1,26 @@
+{
+  "name": "shopping-cart",
+  "version": "1.0.0",
+  "description": "Shopping Cart Management Web Application - MT1 Lab Exam",
+  "main": "httpServer.js",
+  "type": "module",
+  "scripts": {
+    "start": "node httpServer.js",
+    "start:http": "node httpServer.js",
+    "start:express": "node expressApp.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "http-module",
+    "fs-module",
+    "shopping-cart",
+    "rest-api"
+  ],
+  "author": "Abhishek Pandey",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart Management Web Application</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --secondary: #64748b;
+      --success: #10b981;
+      --dark: #0f172a;
+      --light-bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #334155;
+      --heading: #1e293b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      color: white;
+      padding: 35px 30px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.25);
+      margin-bottom: 30px;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .badge-bar {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-bar {
+      background: var(--card-bg);
+      padding: 15px 25px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-bar a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      background: #eff6ff;
+    }
+
+    .nav-bar a:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-bar a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 25px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      color: var(--heading);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: var(--heading);
+      font-weight: 600;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    .price {
+      font-weight: 600;
+      color: #047857;
+    }
+
+    .tag {
+      background: #e0e7ff;
+      color: #4338ca;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .summary-card {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 15px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .summary-item.total {
+      border-top: 2px solid #cbd5e1;
+      padding-top: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--heading);
+    }
+
+    .endpoint-list {
+      list-style: none;
+    }
+
+    .endpoint-item {
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .method {
+      display: inline-block;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-right: 6px;
+    }
+
+    .method-get { background: #dcfce7; color: #15803d; }
+    .method-post { background: #dbeafe; color: #1d4ed8; }
+    .method-put { background: #fef3c7; color: #b45309; }
+    .method-delete { background: #fee2e2; color: #b91c1c; }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 13px;
+      color: var(--secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🛒 Shopping Cart Management Web Application</h1>
+      <p>Node.js &amp; Express.js Full Stack Examination Project (MT1-LABEXAM)</p>
+      <div class="badge-bar">
+        <span class="badge">Node.js HTTP Server (Port 3000)</span>
+        <span class="badge">FS Module Static Serving</span>
+        <span class="badge">Express.js REST API (Port 4000)</span>
+        <span class="badge">ES Modules</span>
+      </div>
+    </header>
+
+    <div class="nav-bar">
+      <a href="/">Welcome (/)</a>
+      <a href="/cart">Cart JSON (/cart)</a>
+      <a href="/about">About (/about)</a>
+      <a href="/home" class="active">Static Home (/home)</a>
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h2>
+            Active Cart Items
+            <span style="font-size: 12px; font-weight: normal; color: var(--secondary);">Static file served via FS module</span>
+          </h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="cartTableBody">
+              <tr>
+                <td>1</td>
+                <td><strong>Wireless Mouse</strong></td>
+                <td><span class="tag">Electronics</span></td>
+                <td class="price">&#8377;799</td>
+                <td>2</td>
+                <td class="price">&#8377;1,598</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Mechanical Keyboard</strong></td>
+                <td><span class="tag">Electronics</span></td>
+                <td class="price">&#8377;2,499</td>
+                <td>1</td>
+                <td class="price">&#8377;2,499</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>USB-C Hub</strong></td>
+                <td><span class="tag">Accessories</span></td>
+                <td class="price">&#8377;1,299</td>
+                <td>1</td>
+                <td class="price">&#8377;1,299</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="summary-card">
+            <div class="summary-item">
+              <span>Total Items:</span>
+              <span><strong>4 units</strong> (3 products)</span>
+            </div>
+            <div class="summary-item total">
+              <span>Cart Grand Total:</span>
+              <span class="price" style="font-size: 18px;">&#8377;5,396</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Application Information</h2>
+          <p>
+            This page is statically stored inside the <code>public/index.html</code> directory and is dynamically read and served to your browser using Node's native <strong><code>fs.readFile()</code></strong> method when the <code>/home</code> route is accessed.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>Part A: HTTP Endpoints</h2>
+          <p style="font-size: 13px; color: var(--secondary); margin-bottom: 12px;">Running on <code>http://localhost:3000</code></p>
+          <ul class="endpoint-list">
+            <li class="endpoint-item"><span class="method method-get">GET</span><code>/</code> - Welcome HTML</li>
+            <li class="endpoint-item"><span class="method method-get">GET</span><code>/cart</code> - Cart Items JSON</li>
+            <li class="endpoint-item"><span class="method method-get">GET</span><code>/about</code> - About App Info</li>
+            <li class="endpoint-item"><span class="method method-get">GET</span><code>/home</code> - Static index.html (FS)</li>
+            <li class="endpoint-item"><span class="method method-post">POST</span><code>/add-to-cart</code> - Add Item</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2>Part B: Express REST API</h2>
+          <p style="font-size: 13px; color: var(--secondary); margin-bottom: 12px;">Running on <code>http://localhost:4000</code></p>
+          <ul class="endpoint-list">
+            <li class="endpoint-item"><span class="method method-get">GET</span><code>/cart</code> - Retrieve all items</li>
+            <li class="endpoint-item"><span class="method method-get">GET</span><code>/cart/:id</code> - Retrieve item by ID</li>
+            <li class="endpoint-item"><span class="method method-post">POST</span><code>/cart</code> - Add new item</li>
+            <li class="endpoint-item"><span class="method method-put">PUT</span><code>/cart/:id</code> - Update item</li>
+            <li class="endpoint-item"><span class="method method-delete">DELETE</span><code>/cart/:id</code> - Delete item</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Shopping Cart Management Web Application &bull; Full Stack Development MT1 Lab Examination &bull; Abhishek Pandey</p>
+    </footer>
+  </div>
+</body>
+</html>
